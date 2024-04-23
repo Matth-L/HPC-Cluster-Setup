@@ -1,4 +1,4 @@
 # Projet Logiciel Cluster 
 
-Lapu Matthias
-Louis Auffret
+- Lapu Matthias
+- Auffret Louis

@@ -51,13 +51,18 @@ et une QOS  ???
 Ahhhh, je pense que c'est ça qu'il faut faire :
 
 créer utilisateur guestsProjetXX qui aura accès à la partition projetXXX et qui aura le droit à seulement X% de la machine.
-et les vrais utilisateurs seront rattachés à cette maitre.
+et les vrais utilisateurs seront rattachés à cette utilisateur.
 
 - Limiter le nombre de jobs et de ressources utilisées par défaut par utilisateur ,
 
-```bash
-sacctmgr add user XXX account=projetXX maxjobs=XX maxcpus=XX maxmem=XXG
-```
+dans slurm.conf :
+
+MaxJobsPerUser=10
+
+MaxCPUsPerNode=8
+
+MaxMemPerNode=32G
+etc.
 
 - Offrir la possibilité aux utilisateurs des projets 1 et 2 de tourner rapidement des jobs pour debugger mais en restreignant encore plus le nombre de ces jobs ainsi que leur durée,
 
@@ -75,4 +80,4 @@ sacctmgr add qos debug priority=XX flags=XX maxjobs=XX maxwall=XX
 sacctmgr add qos projet0 priority=XX flags=XX maxjobs=XX maxwall=XX 
 ```
 
-ducoup ça serait comme dit ligne 54.
+ou ce qui a été dit ligne 54 ??? (ou les 2)

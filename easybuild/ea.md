@@ -1,79 +1,61 @@
-Grâce aux réunions avec les futurs développeurs et utilisateurs de la machine, vous avez identifié
-les besoins suivants :
-• un environnement de développement Intel complet
-• un environnement de développement GNU de base
-• un environnement de développement pour des codes accélérés par GPU/NVIDIA .
-• Une version récente de MATLAB et MATLAB-Engine
+# Réponse 
 
-Vous anticipez d'autres demandes et décidez d'utiliser EasyBuild pour générer et offrir 
-les environnements logiciels voulus. Précisez les toolchains que vous utiliserez et les produits que
-vous offrirez avec leurs versions. Vous trouverez les informations adéquates sous :
-https://docs.easybuild.io/en/latest/version-specific/Supported_software.html
-Dans quels types de systèmes de fichiers pouvez-vous installer ces produits ? Préciser les
-avantages et inconvénients.
+## Développement Intel complet
 
-https://docs.easybuild.io/deprecated-easyconfigs/#deprecated_easyconfigs_implications
+Il n'est pas précisé qu'est ce qui est entendu par le mot "complet". 
+Nous supposons donc qu'un environnement X complet comprend tout ce qui 
+peut être nécessaire, de proche ou de loin, pour faire du développement afin
+que l'utilisateur n'est jamais à devoir installer un paquet.
 
-## Réponse
+Premièrement , il est nécessaire d'installer la toolchain GCCcore, comme indiqué dans 
+le diagramme de Toolchain d'easybuild (https://docs.easybuild.io/common-toolchains/#common_toolchains_what).
 
-(un problème au niveau de la date des versions, j'ai essayé de prendre les plus récentes)
+Ensuite, nous installerons la toolchain intel, celle-ci comportera : 
 
-Il marque pas les dépendances sur le site... assez chiant.
+- leur compilateur C/C++/Fortant
+- leur libraire MPI d'Intel
+- leur librairie "Math Kernel"
+- binutils et gcc, qui seront la base de leurs compilateurs.
 
-### Environnements de développement (Intel)
+A cette toolchain, nous rajouterons également, différentes toolchain utile pour le 
+développement. Il n'est pas précisé si ceux-ci sont comprises dans les dernières versions 
+de la toolchain. Ne trouvant pas cette informations, nous décidons donc de les rajouter.
 
-Pour environnement de dev Intel complet: Par complet on comprend tout ce qui peut être nécessaire de proche ou de loin pour faire du dev.
+Nous ajouterons : 
 
-Sans réfléchir j'aurais dl tous les paquests qui iraient avec Intel.
+- IntelPython, permettant d'améliorer les performances d'un code Python par le biais d'Anaconda.
+- IntelDALL, qui ajoute une optimisation lors de l'analyse de données, cela n'est pas directement
+lié à l'environnement de développement mais de nombreux code en auront besoin.
+- IntelCuda, afin d'ajouter CUDA aux compilateurs fourni de base.
 
-Liste de tt les packets commençant par intel : 
+## Développement GNU de base
 
-Il faut installer GCCcore en premier d'après la toolchain diagram (je pense que sans, il s'isntalle juste tout seul mais bon) https://docs.easybuild.io/common-toolchains/#common_toolchains_what
+Pour un environnement de développement GNU de base, il sera nécessaire d'installer la toolchain 
+GNU, celle-ci comprend uniquement des compilateur GCC et binutils. Il est demandé un développement 
+GNU de base, cela semble donc suffisant.
 
-Ce que j'aurais gardé : 
+## Développement pour codes accélérés par GPU/NVIDIA
 
-- `intel-compilers` car mène directement vers le site HPC intel et est mis à jour le plus récemment 
-
-- `IntelDAAL` Intel® Data Analytics Acceleration Library (Intel® DAAL) is the library of Intel® architecture optimized building blocks covering all stages of data analytics: data acquisition from a data source, preprocessing, transformation, data mining, modeling, validation, and decision making.
-
-- `IntelPython` Intel® Distribution for Python. Powered by Anaconda. Accelerating Python* performance on modern architectures from Intel.
-
----------------------------------------------------
-
-- `intel` (version 2023b) Contient les compilatuers Intels, MPI, Math Kernel Library. Les compilateurs intels sont la toolchain intel-compilers càd : Intel C, C++ & Fortran compilers (classic and oneAPI).
-
- à l'air d'être le 2e le plus à jour, ce qui me dérange est que son compilateur a reçu une maj en 2024, mais ça date la plus récente est 2023.
- donc peut etre pas le plus à jour, mais le plus général.
-
-semble posséder `intel-compilers`, qui lui a recu une maj en 2024 et qui possède C++, Fortran, OpenMP*, and MPI.
-
-- `intelcuda` (version 2020b) Intel Cluster Toolkit Compiler Edition provides Intel C/C++ and Fortran compilers, Intel MPI & Intel MKL, with CUDA toolkit
-
-(cuda jsp car y a un package cuda déjà)
-
-tout à pas l'air a jour de fou, a voir pk. Risque d'avoir pas mal de doublon peut être , à voir comment gérer cela pour éliminer ce qui semble inutile.
-
-### Environnements de développement (GNU)
-
-Toolchain utilisés : 
-
-- `GNU` Compiler-only toolchain with GCC and binutils. (version : 5.1.0-2.25	) 
-
-## Environnements de développement pour des codes accélérés par GPU/NVIDIA
-
-Toolchain utilisé :
-
-- `cuda`
-- `CUDAcompat` pour régler les problèmes de compatibilité si certains codes ne sont pas compatibles avec les versions récentes de CUDA.
-
-## MATLAB et MATLAB-Engine
-
-- `MATLAB`
-- `MATLAB-Engine` (API python)
+Pour la partie code accélérés, nous installerons, la toolchain CUDA, contenant la CUDA-toolkit, 
+permettant aux utilisateur d'avoir accès aux instructions nécessaire aux développements GPU.
+De plus, nous installerons également la toolchain CUDACompat, cela permettra aux utilisateurs 
+ayant le besoin d'utiliser des versions de CUDA, plus ou moins récentes, de pouvoir le faire 
+plus facilement, comme indique le site de NVIDIA (https://docs.nvidia.com/deploy/cuda-compatibility/index.html).
 
 
-fin globalement la toolchain system install tout ce que j'ai dit plus haut
+## MATLAB et MATLAB-ENGINE
 
-sauf matlabengine et proxy qui sont en GCCcore/11.2.0 et GCCcore/11.3.0
+Enfin , afin d'avoir accès au version récente de MATLAB ainsi que de MATLAB-ENGINE nous installerons les toolchains,
+MATLAB, qui comporte l'environnement interactif demandé, ainsi que l'API Python nommé MATLAB-ENGINE.
+Nous pouvons voir que MATLAB-ENGINE nécessite une toolchain différentes (GCCcore/11.2.0), cela risque de 
+nous forcer à choisir cette version pour des problèmes de compatibilité. 
 
-ça, ça force la version de gcc je pesne ou ça introduit des pb de compatbilité, à voir.
+*PAS GIGA SUR DE CETTE PARTIE*
+
+
+
+### Remarque
+
+Nous pouvons remarquer que la majorité de ces toolchains sont estampillés sous le nom de 
+la toolchain system dans la documentation easybuild.
+

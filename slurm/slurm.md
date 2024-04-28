@@ -14,10 +14,10 @@ de calcul
 Nous allons créer des partitions pour chaque projet, chaque partition sera associée à un projet
 cela permettra aux utilisateurs de soumettre leurs jobs sur les différents types de noeuds de calcul.
 
-```bash
-PartitionName=AC Nodes=XX Default=YES MaxTime=INFINITE State=UP
-PartitionName=AL Nodes=XX Default=YES MaxTime=INFINITE State=UP
-PartitionName=AX Nodes=XX Default=YES MaxTime=INFINITE State=UP
+```conf
+NodeName=AC[Deb-Fin] Sockets=XXX RealMemory=XXX State=UNKNOWN
+NodeName=AL[Deb-Fin] Sockets=XXX RealMemory=XXX State=UNKNOWN
+NodeName=AX[Deb-Fin] Sockets=XXX RealMemory=XXX State=UNKNOWN
 ```
 
 (pas giga sur)
@@ -37,3 +37,81 @@ cela nous permettra d'avoir une persistance des données. Il est donc nécessair
 d'avoir une base de données, nous utiliserons MariaDB qui est une base de donnée MySQL.
 
 # Restreindre l’allocation des ressources
+
+Pour qu'il y ait restriction de ressorces en fonction des projets, il sera nécessaire de créer des partitions,
+1 par projet. Ensuite, pour configurer les restrictions, on créera un utilisateur parent qui contiendra les restrictions
+que l'on souhaite appliquer aux utilisateurs. Chaque utilisateur sera rattaché au parent de son projet.
+
+- Création des projets :
+
+```conf
+PartitionName=projet0 Nodes=[XXX] Default=YES MaxTime=INFINITE State=UP
+PartitionName=projet1 Nodes=[ugp3-5] Default=YES MaxTime=INFINITE State=UP
+PartitionName=projet2 Nodes=[ugp6-7] Default=YES MaxTime=INFINITE State=UP
+PartitionName=projet3 Nodes=[ugp8-9] Default=YES MaxTime=INFINITE State=UP
+```
+
+- Limiter le nombre de jobs et de ressources utilisées par défaut par utilisateur ,
+
+Il est nécessaire de rajouter dans le fichier de configuration de Slurm :
+
+```conf
+MaxJobsPerUser=XX
+MaxCPUsPerNode=XX
+MaxMemPerNode=XX
+```
+
+- Offrir la possibilité aux utilisateurs des projets 1 et 2 de tourner rapidement des jobs pour debugger mais en restreignant encore plus le nombre de ces jobs ainsi que leur durée,
+
+```conf
+sacctmgr add qos debug priority=10 maxjobs=2 maxwall=00:5:00 (par ex)
+```
+
+Il faudra ensuite associer les utilisateurs aux QOS.
+
+- Ne pas donner l’accès aux nœuds de la partition AX des utilisateurs du projet0,
+
+Il suffit de préciser dans la partie PartionName=projet0 que les noeuds de la partition AX ne sont pas accessibles.
+
+- Attribuer respectivement aux 4 projets 15 %, 20 %,40 %, 25 % d’utilisation de la machine.
+
+Il faut créer des utilisateurs parents pour chaque projet.
+
+```bash
+sacctmgr create account name=projet0 faishare=15 
+sacctmgr create account name=projet1 faishare=20 
+sacctmgr create account name=projet2 faishare=40 
+sacctmgr create account name=projet3 faishare=25 
+```
+
+# Création des utilisateurs
+
+Créeons un utilisateur pour le projet 0 par exemple.
+
+```bash
+sacctmgr create account name=userXugpYprojet0 parent=project0 account=projet0 qos=normal
+```
+
+Ainsi qu'un utilisateur pour le projet 1, il doit donc pouvoir debugger rapidement, en plus de pouvoir lancer des jobs.
+
+```bash
+sacctmgr create account name=userXugpYprojet1 parent=project1 account=projet1 qos=debug,normal
+```
+
+
+
+# Vérification de la politique mise en place
+
+Pour vérifier la politique mise en place, il suffit de faire :
+
+```bash
+sacctmgr show qos
+```
+Pour voir si les QOS ont bien été créées.
+Ainsi que : 
+
+```bash
+sinfo
+```
+Pour voir les partitions et les noeuds associés.
+

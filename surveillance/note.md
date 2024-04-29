@@ -69,6 +69,9 @@ verif-noeud -H [liste-noeud-AX] -w 65-c 59
 
 Je trouve les pourcentages de chaque partie beaucoup trop élévé.
 
+https://wiki.monitoring-fr.org/shinken/shinken-advanced-architecture.html
+
 # Proposer l'implémentation d'une sonde qui surveillera les seuils de disponibilité pour une partition slurm.
 
-https://wiki.monitoring-fr.org/shinken/shinken-advanced-architecture.html
+```bash
+```

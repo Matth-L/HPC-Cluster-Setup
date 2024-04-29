@@ -30,3 +30,9 @@ Pour la politique de gestion des journaux du cluster :
 - Les autres sont non important et risque également d'être les plus lourds, ils ne seront stockés qu'un mois. 
 
 (cf. logrotate.conf)
+
+
+
+# Relire la proposition technique de AzkarHPC et proposer un espace de stockage adéquat pour le répertoire /var/cluster/ .
+
+NFS 

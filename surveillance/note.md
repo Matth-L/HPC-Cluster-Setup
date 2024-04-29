@@ -67,11 +67,20 @@ verif-noeud -H [liste-noeud-AX] -w 65-c 59
 
 ```
 
-Je trouve les pourcentages de chaque partie beaucoup trop élévé.
+Je trouve les pourcentages de chaque partie beaucoup trop élévé. Je ne comprend pas l'utilité de ces seuils.
 
 https://wiki.monitoring-fr.org/shinken/shinken-advanced-architecture.html
 
 # Proposer l'implémentation d'une sonde qui surveillera les seuils de disponibilité pour une partition slurm.
 
-```bash
-```
+https://github.com/naparuba/check-linux-by-ssh
+
+Nous pouvons voir que lors du tp, il était demandé d'écrire une sonde en bash. Cependant, nous pouvons voir que lors de celui-ci
+nous avons également installer des plugins. 
+Dont linux-ssh, qui lui a des checks écrit en python. 
+Nous ferons donc l'hypothèse que nous pouvons utiliser des plugins python. 
+C'est toujours du python 2... Go faire du sh 
+
+POUR L'INSTANT LE SCRIPT NE FAIT QUE CHECK SI C'EST UP OU DOWN
+
+voir `check_slurm.py`

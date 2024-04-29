@@ -28,6 +28,12 @@ Spécifier comment vous pourriez utiliser ces sondes pour vérifier les critère
 
 On suppose que ces sondes sont des sondes classiques avec un message court sur stdout.
 Il y a très peu d'informations sur les sondes, on suppose qu'elles sont bien faites et respecte les conventions vue en cours.
+De plus, on suppose également que : 
+
+- verif-noeud, donne le pourcentage sur une liste de noeud up
+par exemple, si on fait `verif-noeud -H a,b,c,d` et que seul le noeud d est up, il rendra 25%
+- verif-lustre-routeur, donne le débit
+- verif-nodeset-ssh, donne les pourcentages, comme verif-nodeset-ssh.
 C'est à dire :
 
 ```
@@ -42,12 +48,27 @@ C'est à dire :
 
 TODO voir /etc/shinken/packs/linux-ssh/commands.cfg du TP (pour voir comment sont définis les checks)
 
-```sh
+```bash
+
 # 1) Au moins un nœud de login doit être opérationnel pour chaque communauté
-verif-noeud -H [liste-noeud-login] -w 1 -c 0
+verif-nodeset-ssh -H [liste-noeud-login] -w 1 -c 0
+
 # 2) Un débit minimal de 32 GB/s vers le système de stockage Lustre doit etre assuré,
 verif-lustre-routeur -H [liste-noeud-lustre] -w 35 -c 31
+
+# 3) 90% des noeuds de la partition AC doivent être disponibles
+verif-noeud -H [liste-noeud-AC] -w 95 -c 89
+
+# 4) 80% des nœuds de la partition AL,
+verif-noeud -H [liste-noeud-AL] -w 85 -c 79
+
+# 5) 60 % des nœuds de la partition AX.
+verif-noeud -H [liste-noeud-AX] -w 65-c 59
+
 ```
 
+Je trouve les pourcentages de chaque partie beaucoup trop élévé.
+
+# Proposer l'implémentation d'une sonde qui surveillera les seuils de disponibilité pour une partition slurm.
 
 https://wiki.monitoring-fr.org/shinken/shinken-advanced-architecture.html

@@ -52,7 +52,15 @@ nous forcer à choisir cette version pour des problèmes de compatibilité.
 
 *PAS GIGA SUR DE CETTE PARTIE*
 
+# Dans quels types de systèmes de fichiers pouvez-vous installer ces produits ? Préciser les avantages et inconvénients.
 
+Cela sera directement dans les noeuds de login, ceux-ci possèdent des disques durs, ils seront accessible en lecture seule. Afin que les utilisateurs aient facilement 
+accès à leurs environnement. Le système de fichier est donc ext4. 
+L'avantage de cette solution est la localité des environnements, permettant donc un accès plus rapide et le fait de ne pas surcharger le réseau. 
+L'inconvénient est la mise à jour qu'il faudra faire sur chaque machine. 
+
+Pour cela nous proposons de mettre des "mirrors" sur certains noeuds de services contenant les paquets à mettre à jour. Il suffira alors d'utiliser un crontab
+demandant à puppet de faire des mises à jour régulièrement. De plus, cela permettra aux administrateurs d'approuver les versions et de facilement décliner une mise à jour.
 
 ### Remarque
 

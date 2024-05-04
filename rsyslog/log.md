@@ -1,3 +1,5 @@
+Le lien pour edit le canva : https://www.canva.com/design/DAGEJ69bZyc/BFuKducBjQHTnk9WHpM0zg/edit
+
 # 4.8
 
 Le fichier de log vient du cluster et a été modifié.

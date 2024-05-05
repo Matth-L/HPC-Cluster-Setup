@@ -38,18 +38,7 @@ d'avoir une base de données, nous utiliserons MariaDB qui est une base de donn�
 
 # Restreindre l’allocation des ressources
 
-Pour qu'il y ait restriction de ressorces en fonction des projets, il sera nécessaire de créer des partitions,
-1 par projet. Ensuite, pour configurer les restrictions, on créera un utilisateur parent qui contiendra les restrictions
-que l'on souhaite appliquer aux utilisateurs. Chaque utilisateur sera rattaché au parent de son projet.
-
-- Création des projets :
-
-```conf
-PartitionName=projet0 Nodes=[XXX] Default=YES MaxTime=INFINITE State=UP
-PartitionName=projet1 Nodes=[ugp3-5] Default=YES MaxTime=INFINITE State=UP
-PartitionName=projet2 Nodes=[ugp6-7] Default=YES MaxTime=INFINITE State=UP
-PartitionName=projet3 Nodes=[ugp8-9] Default=YES MaxTime=INFINITE State=UP
-```
+Juste faire des parents pour chaque projet et leur attribuer un pourcentage de ressources.
 
 - Limiter le nombre de jobs et de ressources utilisées par défaut par utilisateur ,
 
@@ -57,10 +46,10 @@ Il est nécessaire de rajouter dans le fichier de configuration de Slurm :
 
 ```conf
 MaxJobsPerUser=XX
-MaxCPUsPerNode=XX
-MaxMemPerNode=XX
+MaxSubmitJobsPerUser = XX
 ```
 
+La limite des 
 - Offrir la possibilité aux utilisateurs des projets 1 et 2 de tourner rapidement des jobs pour debugger mais en restreignant encore plus le nombre de ces jobs ainsi que leur durée,
 
 ```conf

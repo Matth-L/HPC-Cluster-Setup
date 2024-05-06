@@ -20,8 +20,6 @@ NodeName=AL[Deb-Fin] Sockets=XXX RealMemory=XXX State=UNKNOWN
 NodeName=AX[Deb-Fin] Sockets=XXX RealMemory=XXX State=UNKNOWN
 ```
 
-(pas giga sur)
-
 - Optimisera l’ordonnancement des jobs et le choix des nœuds lors de leur allocation.
 
 Pour notre configuration Slurm, nous utiliserons le "backfill" pour l'ordonnancement des jobs,
@@ -52,8 +50,8 @@ MaxSubmitJobsPerUser = XX
 La limite des 
 - Offrir la possibilité aux utilisateurs des projets 1 et 2 de tourner rapidement des jobs pour debugger mais en restreignant encore plus le nombre de ces jobs ainsi que leur durée,
 
-```conf
-sacctmgr add qos debug priority=10 maxjobs=2 maxwall=00:5:00 (par ex)
+```bash
+sacctmgr -i create QOS name=debug priority=10 maxjobs=2 maxwall=10:00 
 ```
 
 Il faudra ensuite associer les utilisateurs aux QOS.

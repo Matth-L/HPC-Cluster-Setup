@@ -81,6 +81,4 @@ Dont linux-ssh, qui lui a des checks écrit en python.
 Nous ferons donc l'hypothèse que nous pouvons utiliser des plugins python. 
 C'est toujours du python 2... Go faire du sh 
 
-POUR L'INSTANT LE SCRIPT NE FAIT QUE CHECK SI C'EST UP OU DOWN
-
 voir `check_slurm.py`

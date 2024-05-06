@@ -1,4 +1,5 @@
 # inspired by: /usr/lib64/nagios/plugins/ in the slurm vm 
+# Lapu Matthias , Louis Auffret , ENSIIE
 
 import os
 import sys
@@ -34,16 +35,22 @@ def execute_slurm_check(client, command):
 # inter        up   infinite      2   idle hpc[02-03]
 # calcul*      up   infinite     10   idle hpc[04-13]
 
-def parse_slurm_output(output, partition):
+def check_slurm_disponibility_partition(output, partition):
+    # += should'nt be necessary because there should only be
+    # one line with the partition name but we never know
+    node_count = 0
     lines = output.split('\n')
     for line in lines:
         if partition in line:
-            data = line.split()
-            if data[1] == "up":
-                return "OK: Partition %s is up" % partition
-            else:
-                return "Partition %s is down" % partition
-
+            # we need to count the number of nodes in the partition
+            node_count += int(line.split()[3])
+    # now we need to have the number of running jobs
+    available_nodes = 0
+    for line in lines:
+        if partition in line:
+            if "idle" in line:
+                available_nodes += int(line.split()[3])
+    return "OK : %d nodes available out of %d" % (available_nodes, node_count)
 
 parser = optparse.OptionParser(
     "%prog [options]", version="%prog " + VERSION)
@@ -92,6 +99,6 @@ if not critical:
 
 client= schecks.connect_ssh(opts.hostname, opts.port, opts.user, opts.ssh_key_file, opts.passphrase)
 output = execute_slurm_check(client, partition)
-result = parse_slurm_output(output, opts.threshold)
+result = check_slurm_disponibility_partition(output, opts.threshold)
 print(result)
 sys.exit(0)

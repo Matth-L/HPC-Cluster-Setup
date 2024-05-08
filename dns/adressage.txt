@@ -1,0 +1,24 @@
+Le réseau d'administration est 172.16.0.0/16.
+Le réseau IB est 172.17.0.0/16.
+Le réseau de contrôle électrique est 172.18.0.0/16.
+La portion du réseau backbone attribuée au cluster est 172.19.0.0/16
+
+Convention d'adressage pour les noeuds :
+
+L'adresse attribuée à un noeud qui n'est pas un noeud de calcul est la suivante :
+172.X.Y.Z avec X qui dépend du réseau, Y qui dépend du numéro du port, et Z qui correspond au numéro attribué au noeud dans la partie groupes clustershell.
+
+Exemple : Pour le deuxième port 10 Gb du noeud maître 1, on a X=16 car c'est le réseau d'administration, Y=2 car c'est le deuxième port 10 Gb, et Z=20 car c'est le noeud sabatier20. On a alors 172.16.2.20 pour cette interface.
+
+Pour les noeuds de calcul, on a toujours 172.X.Y.Z, X a toujours la même signification, mais les différences sont les suivantes :
+Z est compris entre 0 et 99
+le chiffre des dizaines de Y détermine la partition (1 pour AC, 2 pour AL, 3 pour AX), le numéro du noeud dans cette partition est 100 fois le chiffre des unités de Y plus Z. (100 * (Y%10) + Z)
+
+Exemples :
+Pour le 155e noeud de la partition AC (numéroté 154 car la numérotation est à partir de 0), son adresse sur le réseau IB est 172.17.11.54
+Pour le noeud 28 de la partition AX, son adresse sur le réseau de contrôle électrique est 172.18.30.28
+
+
+conf DNS université : fournir un nom de domaine aux noeuds de login pour les utilisateurs et aux noeuds maîtres pour les administrateurs
+
+TODO : il manque le NFS dans les groupes clustershell

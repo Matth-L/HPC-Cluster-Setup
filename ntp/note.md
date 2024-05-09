@@ -5,4 +5,6 @@ https://www.canva.com/design/DAGEJ9Ye7uE/Unw66Ag-29jp1ToefgxXGA/edit?utm_content
 Il y a marqué dans le sujet qu'ils sont tous les 2 dans un seul boitier ?? 
 2 versions du coup, à choisir on prend laquelle ?
 
+tkt, ntp sélectionne aléatoirement dans sa liste de serveurs pour faire du load balancing
+
 TODO : Mettre le nom des noeuds etc

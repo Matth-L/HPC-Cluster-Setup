@@ -1,6 +1,6 @@
 #  HPC Cluster Deployment Project
 
-This project aims to deploy a High-Performance Computing (HPC) cluster at the Toulouse 3 University.
+This project aims to deploy a High-Performance Computing (HPC) cluster at a fictive university.
 
 ## Project Goals
 - Deploy a high-performance, scalable HPC cluster
